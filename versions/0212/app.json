@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "pages/trainer/trainer"
+  ],
+  "window": {
+    "navigationBarTitleText": "节律训练",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#ffffff"
+  }
+}
