@@ -1,0 +1,194 @@
+<!-- pages/stage2/index.wxml -->
+<view class="container">
+  <!-- Top App Bar -->
+  <view class="app-bar">
+    <view class="icon-btn" bindtap="onBack">
+      <image class="icon" src="/images/back.png" mode="aspectFit" />
+    </view>
+    <text class="app-bar-title">Stage 2 变速挑战</text>
+    <view class="icon-btn" bindtap="onHelp">
+      <image class="icon" src="/images/help.png" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="training-content">
+    
+    <!-- 顶部信息 -->
+    <view class="top-section-compact">
+      <!-- 环形进度 -->
+      <view wx:if="{{phase === 'training' || phase === 'paused'}}" class="progress-container-small">
+        <view class="circular-progress-small">
+          <text class="progress-text-small">{{Math.floor(progress)}}%</text>
+        </view>
+      </view>
+
+      <!-- 信息 Chips -->
+      <view class="chips-row">
+        <view class="chip chip-success">
+          <text class="chip-value">Round {{currentRound}}/{{totalRounds}}</text>
+        </view>
+        <view class="chip chip-default">
+          <text class="chip-label">BPM</text>
+          <text class="chip-value">{{bpmCur}}</text>
+        </view>
+        <view class="chip chip-muted">
+          <text class="chip-label">Range</text>
+          <text class="chip-value">±{{range}}%</text>
+        </view>
+        <view class="chip chip-muted">
+          <text class="chip-label">容忍窗</text>
+          <text class="chip-value">{{tolMs}}ms</text>
+        </view>
+      </view>
+
+      <!-- 速度变化提示 -->
+      <view wx:if="{{isTransitioning}}" class="speed-hint">
+        <image class="speed-icon" src="/images/{{bpmTarget > bpmCur ? 'up' : 'down'}}.png" mode="aspectFit" />
+        <text class="speed-text">速度调整中 {{bpmCur}} → {{bpmTarget}}</text>
+      </view>
+    </view>
+
+    <!-- 中央区域 -->
+    <view class="center-section">
+      <!-- 准备阶段 -->
+      <view wx:if="{{phase === 'prepare' && prepareCountdown > 0}}" class="prepare-container">
+        <view class="hint-box hint-default">
+          <text class="hint-text">准备 {{prepareCountdown}}s</text>
+        </view>
+      </view>
+
+      <!-- 倒计时 -->
+      <view wx:elif="{{phase === 'countdown' && countdown > 0}}" class="countdown-container">
+        <text class="countdown-number {{animateCountdown ? 'countdown-animate' : ''}}">{{countdown}}</text>
+      </view>
+
+      <!-- 训练阶段 -->
+      <view wx:else class="orb-container">
+        <view class="beat-orb-wrapper" bindtap="handleBeatClick">
+          <view class="beat-orb-ring beat-orb-ring-{{orbState}} {{phase === 'training' && shouldPulse ? 'beat-orb-pulse' : ''}}">
+            <view class="beat-orb beat-orb-{{orbState}}"></view>
+          </view>
+        </view>
+
+        <view class="hint-box {{phase === 'training' ? 'hint-highlight' : 'hint-default'}}">
+          <text class="hint-text">
+            {{phase === 'training' ? '跟着圆点点点点' : '训练已暂停'}}
+          </text>
+        </view>
+
+        <view wx:if="{{phase === 'training'}}" class="stats-text">
+          <text>命中: {{roundHits}} / {{roundTotal}} ({{currentHitRate}}%)</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- DDA 面板 -->
+    <view wx:if="{{phase === 'training' && currentRound > 1}}" class="dda-panel">
+      <text class="dda-title">上轮表现</text>
+      <view class="dda-stats">
+        <view class="dda-item">
+          <text class="dda-label">命中率</text>
+          <text class="dda-value">{{lastBlockAcc}}%</text>
+        </view>
+        <view class="dda-item">
+          <text class="dda-label">平均误差</text>
+          <text class="dda-value">{{lastBlockErr}}ms</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="bottom-section">
+      <view wx:if="{{phase === 'training'}}" class="btn-group btn-group-split">
+        <view class="btn btn-secondary btn-large btn-half" bindtap="onExit">退出</view>
+        <view class="btn btn-primary btn-large btn-half" bindtap="onPause">暂停</view>
+      </view>
+      <view wx:elif="{{phase === 'paused'}}" class="btn-group btn-group-split">
+        <view class="btn btn-secondary btn-large btn-half" bindtap="onExit">退出</view>
+        <view class="btn btn-primary btn-large btn-half" bindtap="onResume">继续</view>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 轮次结果弹窗 -->
+  <view wx:if="{{showRoundResult}}" class="modal-overlay">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">Round {{currentRound}} 完成</text>
+      </view>
+
+      <view class="modal-body">
+        <view class="stats-card">
+          <text class="stats-card-title">本轮成绩</text>
+          <view class="stats-grid">
+            <view class="stat-item">
+              <text class="stat-label">命中率</text>
+              <text class="stat-value">{{currentHitRate}}<text class="stat-unit">%</text></text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">平均误差</text>
+              <text class="stat-value">{{roundMeanErr}}<text class="stat-unit">ms</text></text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">最终 BPM</text>
+              <text class="stat-value">{{bpmCur}}</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">最终 Range</text>
+              <text class="stat-value">±{{range}}<text class="stat-unit">%</text></text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <view class="btn btn-primary btn-large btn-full" bindtap="handleNextRound">
+          {{currentRound >= totalRounds ? '查看总结' : '继续下一轮'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最终结果弹窗 -->
+  <view wx:if="{{showFinalResult}}" class="modal-overlay">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">🎉 Stage 2 完成！</text>
+      </view>
+
+      <view class="modal-body">
+        <text class="modal-message">太棒了！你完成了所有 4 轮挑战！</text>
+        
+        <view class="stats-card">
+          <text class="stats-card-title">总体表现</text>
+          <view class="stats-grid">
+            <view class="stat-item">
+              <text class="stat-label">完成轮数</text>
+              <text class="stat-value">{{totalRounds}}</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">最终 BPM</text>
+              <text class="stat-value">{{bpmCur}}</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">最终 Range</text>
+              <text class="stat-value">±{{range}}<text class="stat-unit">%</text></text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">最终容忍窗</text>
+              <text class="stat-value">{{tolMs}}<text class="stat-unit">ms</text></text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <view class="btn btn-primary btn-large btn-full" bindtap="onComplete">
+          返回
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

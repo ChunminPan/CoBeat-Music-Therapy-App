@@ -1,0 +1,161 @@
+<!-- pages/stage1/index.wxml -->
+<view class="container">
+  <!-- Top App Bar -->
+  <view class="app-bar">
+    <view class="icon-btn" bindtap="onBack">
+      <image class="icon" src="/images/back.png" mode="aspectFit" />
+    </view>
+    <text class="app-bar-title">Stage 1 固定节拍</text>
+    <view style="width: 88rpx;"></view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="training-content">
+    
+    <!-- 顶部进度区域 -->
+    <view class="top-section">
+      <!-- 环形进度 -->
+      <view wx:if="{{phase === 'training' || phase === 'paused'}}" class="progress-container">
+        <view class="circular-progress">
+          <text class="progress-text">{{timeRemaining}}s</text>
+          <canvas canvas-id="progressCanvas" class="progress-canvas"></canvas>
+        </view>
+      </view>
+
+      <!-- 信息 Chips -->
+      <view class="chips-row">
+        <view class="chip chip-default">
+          <text class="chip-label">BPM</text>
+          <text class="chip-value">{{bpm}}</text>
+        </view>
+        <view class="chip chip-muted">
+          <text class="chip-label">容忍窗</text>
+          <text class="chip-value">{{tolMs}}ms</text>
+        </view>
+        <view wx:if="{{phase === 'training' || phase === 'paused'}}" class="chip chip-success">
+          <text class="chip-label">剩余</text>
+          <text class="chip-value">{{timeRemaining}}s</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 中央区域 -->
+    <view class="center-section">
+      <!-- 倒计时 -->
+      <view wx:if="{{phase === 'countdown' && countdown > 0}}" class="countdown-container">
+        <text class="countdown-number {{animateCountdown ? 'countdown-animate' : ''}}">{{countdown}}</text>
+        <view class="hint-box hint-default">
+          <text class="hint-text">准备开始...</text>
+        </view>
+      </view>
+
+      <!-- 训练阶段 -->
+      <view wx:else class="orb-container">
+        <!-- Beat Orb -->
+        <view class="beat-orb-wrapper" bindtap="handleBeatClick">
+          <view class="beat-orb-ring beat-orb-ring-{{orbState}} {{phase === 'training' && shouldPulse ? 'beat-orb-pulse' : ''}}">
+            <view class="beat-orb beat-orb-{{orbState}}"></view>
+          </view>
+        </view>
+
+        <!-- 提示文案 -->
+        <view class="hint-box {{phase === 'training' ? 'hint-highlight' : 'hint-default'}}">
+          <text class="hint-text">
+            {{phase === 'training' ? '跟着圆点点点点' : phase === 'paused' ? '训练已暂停' : '训练完成'}}
+          </text>
+        </view>
+
+        <!-- 实时统计 -->
+        <view wx:if="{{phase === 'training'}}" class="stats-text">
+          <text>命中: {{hitBeats}} / {{totalBeats}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作区 -->
+    <view class="bottom-section">
+      <!-- 倒计时阶段 -->
+      <view wx:if="{{phase === 'countdown'}}" class="btn-group">
+        <view class="btn btn-secondary btn-large btn-full" bindtap="onExit">
+          取消
+        </view>
+      </view>
+
+      <!-- 训练中 -->
+      <view wx:elif="{{phase === 'training'}}" class="btn-group btn-group-split">
+        <view class="btn btn-secondary btn-large btn-half" bindtap="onExit">
+          退出
+        </view>
+        <view class="btn btn-primary btn-large btn-half" bindtap="onPause">
+          暂停
+        </view>
+      </view>
+
+      <!-- 暂停状态 -->
+      <view wx:elif="{{phase === 'paused'}}" class="btn-group btn-group-split">
+        <view class="btn btn-secondary btn-large btn-half" bindtap="onExit">
+          退出
+        </view>
+        <view class="btn btn-primary btn-large btn-half" bindtap="onResume">
+          继续
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 结果弹窗 -->
+  <view wx:if="{{showResultModal}}" class="modal-overlay" bindtap="closeModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">{{isPassed ? '🎉 训练完成！' : '训练完成'}}</text>
+        <view class="modal-close" bindtap="closeModal">
+          <image class="icon" src="/images/close.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <text class="modal-message">
+          {{isPassed ? '太棒了！你的表现达标了，可以进入下一阶段！' : '继续练习，你会越来越好的！'}}
+        </text>
+
+        <!-- 统计卡片 -->
+        <view class="stats-card">
+          <text class="stats-card-title">本轮成绩</text>
+          <view class="stats-grid">
+            <view class="stat-item">
+              <text class="stat-label">命中率</text>
+              <text class="stat-value">{{hitRate}}<text class="stat-unit">%</text></text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">达标要求</text>
+              <text class="stat-value">70<text class="stat-unit">%</text></text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">总节拍数</text>
+              <text class="stat-value">{{totalBeats}}</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-label">命中数</text>
+              <text class="stat-value">{{hitBeats}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 达标状态 -->
+        <view class="status-badge {{isPassed ? 'status-passed' : 'status-failed'}}">
+          <text>{{isPassed ? '✓ 已达标' : '✗ 未达标'}}</text>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <view class="btn btn-secondary btn-large btn-half" bindtap="onBackToMode">
+          返回
+        </view>
+        <view class="btn btn-primary btn-large btn-half" bindtap="{{isPassed ? 'onUnlockStage2' : 'onRetry'}}">
+          {{isPassed ? '解锁 Stage 2' : '再试一次'}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

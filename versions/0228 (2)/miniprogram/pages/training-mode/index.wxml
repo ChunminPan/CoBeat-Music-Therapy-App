@@ -1,0 +1,64 @@
+<!-- pages/training-mode/index.wxml -->
+<view class="container">
+  <!-- Top App Bar -->
+  <view class="app-bar">
+    <view class="icon-btn" bindtap="onBack">
+      <image class="icon" src="/images/back.png" mode="aspectFit" />
+    </view>
+    <text class="app-bar-title">节拍训练</text>
+    <view class="icon-btn" bindtap="onHelp">
+      <image class="icon" src="/images/help.png" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="page-content">
+    
+    <!-- Stage 1 卡片 -->
+    <view class="card stage-card">
+      <view class="stage-header">
+        <view class="stage-info">
+          <view class="stage-title-row">
+            <image class="stage-icon" src="/images/activity.png" mode="aspectFit" />
+            <text class="stage-title">Stage 1：固定节拍</text>
+          </view>
+          <text class="stage-subtitle">60–80 BPM，1 分钟一轮</text>
+          <text class="stage-desc">跟随固定节奏，练习稳定性</text>
+        </view>
+      </view>
+      
+      <view class="btn btn-primary btn-large" bindtap="onStage1">
+        进入 Stage 1
+      </view>
+    </view>
+
+    <!-- Stage 2 卡片 -->
+    <view class="card stage-card {{stage2Unlocked ? '' : 'stage-locked'}}">
+      <view class="stage-header">
+        <view class="stage-info">
+          <view class="stage-title-row">
+            <image class="stage-icon {{stage2Unlocked ? 'icon-success' : ''}}" src="/images/zap.png" mode="aspectFit" />
+            <text class="stage-title">Stage 2：变速挑战</text>
+            <image wx:if="{{!stage2Unlocked}}" class="lock-icon" src="/images/lock.png" mode="aspectFit" />
+            <image wx:if="{{stage2Unlocked}}" class="lock-icon icon-success" src="/images/unlock.png" mode="aspectFit" />
+          </view>
+          <text class="stage-subtitle">4×30 秒，动态难度</text>
+          <text class="stage-desc">
+            {{stage2Unlocked ? '自适应难度，挑战你的极限' : '完成 Stage 1 达标（≥70%）后解锁'}}
+          </text>
+        </view>
+      </view>
+      
+      <view class="btn {{stage2Unlocked ? 'btn-primary' : 'btn-disabled'}} btn-large" 
+            bindtap="onStage2">
+        {{stage2Unlocked ? '进入 Stage 2' : '未解锁'}}
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view wx:if="{{!stage2Unlocked}}" class="hint-card">
+      <text class="hint-text">💡 完成 Stage 1 并达到 70% 命中率即可解锁 Stage 2</text>
+    </view>
+
+  </view>
+</view>

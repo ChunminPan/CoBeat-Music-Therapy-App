@@ -1,0 +1,109 @@
+/* pages/training-mode/index.wxss */
+
+.app-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 40rpx;
+  background-color: var(--color-card);
+  min-height: 88rpx;
+}
+
+.app-bar-title {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  color: var(--color-foreground);
+  flex: 1;
+  text-align: center;
+}
+
+.icon-btn {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.icon-btn:active {
+  background-color: var(--color-accent);
+}
+
+.icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+/* Stage 卡片 */
+.stage-card {
+  margin-bottom: 40rpx;
+}
+
+.stage-locked {
+  opacity: 0.75;
+}
+
+.stage-header {
+  margin-bottom: 32rpx;
+}
+
+.stage-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.stage-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.stage-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.icon-success {
+  filter: brightness(0) saturate(100%) invert(78%) sepia(12%) saturate(1234%) hue-rotate(93deg) brightness(95%) contrast(89%);
+}
+
+.lock-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-left: auto;
+}
+
+.stage-title {
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.stage-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+  margin-left: 56rpx;
+}
+
+.stage-desc {
+  font-size: var(--text-xs);
+  color: var(--color-muted-foreground);
+  margin-left: 56rpx;
+}
+
+/* 提示卡片 */
+.hint-card {
+  background-color: rgba(139, 159, 219, 0.05);
+  border-radius: var(--radius-lg);
+  padding: 32rpx;
+  border: 2rpx solid rgba(139, 159, 219, 0.2);
+}
+
+.hint-text {
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  text-align: center;
+  display: block;
+}
