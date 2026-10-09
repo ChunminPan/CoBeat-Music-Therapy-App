@@ -1,0 +1,14 @@
+<view class="bar">
+  <view class="left">
+    <view wx:if="{{showBack}}" class="icon-btn" bindtap="onBack">←</view>
+  </view>
+
+  <view class="center">
+    <text class="title">{{title}}</text>
+  </view>
+
+  <view class="right">
+    <view wx:if="{{showHelp}}" class="icon-btn" bindtap="onHelp">?</view>
+    <view wx:if="{{showSettings}}" class="icon-btn" bindtap="onSettings">⚙️</view>
+  </view>
+</view>

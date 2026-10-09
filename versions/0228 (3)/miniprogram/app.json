@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/training-mode-select/index",
+    "pages/stage1/index",
+    "pages/stage2/index",
+    "pages/melody-maker/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundTextStyle": "light",
+    "backgroundColor": "#ffffff"
+  }
+}

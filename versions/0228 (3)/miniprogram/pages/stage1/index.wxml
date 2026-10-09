@@ -1,0 +1,28 @@
+<view class="page bg">
+  <top-app-bar title="Stage 1" showBack="{{true}}" showHelp="{{false}}" bind:back="goBack" />
+
+  <view class="wrap">
+    <view class="card p24">
+      <text class="h2 block">固定节拍（Demo）</text>
+      <text class="muted small block">这里只做预览用：点击“开始”后计时 10 秒，点“Tap”计数。</text>
+
+      <view class="stat">
+        <view class="stat-item">
+          <text class="muted small">剩余</text>
+          <text class="big">{{remain}}s</text>
+        </view>
+        <view class="stat-item">
+          <text class="muted small">点击</text>
+          <text class="big">{{taps}}</text>
+        </view>
+      </view>
+
+      <view class="btnrow">
+        <button class="btn secondary" bindtap="reset">重置</button>
+        <button class="btn primary" bindtap="toggle">{{running ? '暂停' : '开始'}}</button>
+      </view>
+
+      <button class="btn tap" bindtap="doTap" disabled="{{!running}}">Tap</button>
+    </view>
+  </view>
+</view>

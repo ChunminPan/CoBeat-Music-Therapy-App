@@ -1,0 +1,7 @@
+<button
+  class="btn {{size}} {{disabled ? 'disabled' : ''}} {{className}}"
+  disabled="{{disabled}}"
+  bindtap="onTap"
+>
+  <slot></slot>
+</button>

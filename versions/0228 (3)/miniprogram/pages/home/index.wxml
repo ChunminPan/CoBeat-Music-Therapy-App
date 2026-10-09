@@ -1,0 +1,63 @@
+<view class="page bg">
+  <view class="topbar">
+    <text class="title">Music Therapy</text>
+    <view class="icon-btn" bindtap="goSettings">⚙️</view>
+  </view>
+
+  <scroll-view class="content" scroll-y="true">
+    <view class="card p24">
+      <view class="row between mb16">
+        <view class="col">
+          <text class="h2">节拍训练</text>
+          <text class="muted small">跟着节拍点一点</text>
+        </view>
+        <view class="icon-circle primary">🥁</view>
+      </view>
+
+      <primary-button size="large" bind:tap="goTrainingMode">
+        开始训练
+      </primary-button>
+    </view>
+
+    <view class="card p24">
+      <view class="row between mb16">
+        <view class="col">
+          <text class="h2">即兴创作</text>
+          <text class="muted small">点格子做旋律</text>
+        </view>
+        <view class="icon-circle success">🔲</view>
+      </view>
+
+      <primary-button size="large" bind:tap="goCreation">
+        开始创作
+      </primary-button>
+    </view>
+
+    <view class="card p20 tap" bindtap="goRecords">
+      <view class="row between mb12">
+        <text class="h3">最近记录</text>
+        <text class="muted">🎵</text>
+      </view>
+
+      <view wx:if="{{recentTraining.hasData || recentWork.hasData}}" class="stack">
+        <view wx:if="{{recentTraining.hasData}}" class="row gap8 small">
+          <text>🕒</text>
+          <text class="muted">训练</text>
+          <text class="bold">命中率 {{recentTraining.hitRate}}%</text>
+          <text class="muted right">{{recentTraining.date}}</text>
+        </view>
+
+        <view wx:if="{{recentWork.hasData}}" class="row gap8 small">
+          <text>🎵</text>
+          <text class="muted">作品</text>
+          <text class="bold">{{recentWork.name}}</text>
+          <text class="muted right">{{recentWork.date}}</text>
+        </view>
+      </view>
+
+      <view wx:else>
+        <text class="muted small">还没有记录，开始你的第一次练习吧！</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

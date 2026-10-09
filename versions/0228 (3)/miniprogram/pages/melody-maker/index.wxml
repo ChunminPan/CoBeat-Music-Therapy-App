@@ -1,0 +1,18 @@
+<view class="page bg">
+  <top-app-bar title="即兴创作" showBack="{{true}}" bind:back="goBack" />
+
+  <view class="wrap">
+    <view class="card p24">
+      <text class="h2 block">Melody Maker（Demo）</text>
+      <text class="muted small block">这里只做预览用：点击格子切换“音符”。</text>
+
+      <view class="grid">
+        <block wx:for="{{cells}}" wx:key="idx">
+          <view class="cell {{item.on ? 'on' : ''}}" data-i="{{index}}" bindtap="toggleCell"></view>
+        </block>
+      </view>
+
+      <button class="btn secondary" bindtap="clearAll">清空</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "top-app-bar": "/components/top-app-bar/top-app-bar",
+    "primary-button": "/components/primary-button/primary-button"
+  }
+}

@@ -1,0 +1,9 @@
+.page { height: 100vh; display: flex; flex-direction: column; }
+.wrap { padding: 24rpx 32rpx; }
+.p24 { padding: 48rpx; }
+.block { display: block; }
+.small { font-size: 26rpx; }
+.seg { padding: 28rpx; border: 1px solid #eee; border-radius: 16rpx; margin: 24rpx 0; }
+.big { font-size: 44rpx; font-weight: 800; display: block; margin-top: 8rpx; }
+.btn { border-radius: 16rpx; font-weight: 700; height: 96rpx; line-height: 96rpx; font-size: 30rpx; }
+.primary { background: #2563eb; color: #fff; }

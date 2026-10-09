@@ -1,0 +1,15 @@
+.btn {
+  width: 100%;
+  border-radius: 16rpx;
+  font-weight: 700;
+  background: #2563eb;
+  color: #fff;
+}
+
+.large {
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 30rpx;
+}
+
+.disabled { opacity: 0.5; }

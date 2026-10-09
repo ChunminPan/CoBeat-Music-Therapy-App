@@ -1,0 +1,9 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "projectname": "music-therapy-miniprogram",
+  "description": "Music therapy training mini program (UI scaffold)",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": false
+  }
+}

@@ -1,0 +1,17 @@
+<view class="page bg">
+  <top-app-bar title="Stage 2" showBack="{{true}}" bind:back="goBack" />
+
+  <view class="wrap">
+    <view class="card p24">
+      <text class="h2 block">变速挑战（Demo）</text>
+      <text class="muted small block">这里只做预览用：展示“段落”概念。</text>
+
+      <view class="seg">
+        <text class="muted small">当前段落</text>
+        <text class="big">{{segment}} / 4</text>
+      </view>
+
+      <button class="btn primary" bindtap="next">下一段</button>
+    </view>
+  </view>
+</view>

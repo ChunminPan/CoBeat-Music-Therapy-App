@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "top-app-bar": "/components/top-app-bar/top-app-bar"
+  }
+}

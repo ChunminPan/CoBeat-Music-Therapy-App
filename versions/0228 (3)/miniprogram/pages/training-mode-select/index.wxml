@@ -1,0 +1,59 @@
+<view class="page bg">
+  <top-app-bar
+    title="节拍训练"
+    showBack="{{true}}"
+    showHelp="{{true}}"
+    showSettings="{{false}}"
+    bind:back="goBack"
+    bind:help="openHelp"
+  />
+
+  <scroll-view class="content" scroll-y="true">
+    <view class="card p24">
+      <view class="row gap8 mb16">
+        <text class="badge primary">⚡</text>
+        <text class="h2">Stage 1：固定节拍</text>
+      </view>
+
+      <text class="muted small block">60–80 BPM，1 分钟一轮</text>
+      <text class="muted xsmall block">跟随固定节奏，练习稳定性</text>
+
+      <view class="mt16">
+        <primary-button size="large" bind:tap="goStage1">
+          进入 Stage 1
+        </primary-button>
+      </view>
+    </view>
+
+    <view class="card p24 {{stage2Unlocked ? '' : 'locked'}}">
+      <view class="row gap8 mb16">
+        <text class="badge {{stage2Unlocked ? 'success' : 'muted'}}">⚡</text>
+        <text class="h2">Stage 2：变速挑战</text>
+        <text class="muted xsmall">{{stage2Unlocked ? '🔓' : '🔒'}}</text>
+      </view>
+
+      <text class="muted small block">4×30 秒，动态难度</text>
+
+      <text class="muted xsmall block" wx:if="{{stage2Unlocked}}">
+        自适应难度，挑战你的极限
+      </text>
+      <text class="muted xsmall block" wx:else>
+        完成 Stage 1 达标（≥70%）后解锁
+      </text>
+
+      <view class="mt16">
+        <primary-button
+          size="large"
+          disabled="{{!stage2Unlocked}}"
+          bind:tap="goStage2"
+        >
+          {{stage2Unlocked ? '进入 Stage 2' : '未解锁'}}
+        </primary-button>
+      </view>
+    </view>
+
+    <view wx:if="{{!stage2Unlocked}}" class="tip">
+      <text class="tip-text">💡 完成 Stage 1 并达到 70% 命中率即可解锁 Stage 2</text>
+    </view>
+  </scroll-view>
+</view>
