@@ -1,0 +1,118 @@
+<view class="page">
+  <view class="title">节律训练</view>
+  <view class="subtitle">
+    容忍窗 {{tolMs}}ms ｜Stage1：固定BPM｜Stage2：DDA自适应
+  </view>
+
+  <!-- Mode Switch -->
+  <view class="modeRow">
+    <button class="modeBtn {{mode==='stage1'?'active':''}}" bindtap="setMode" data-mode="stage1" disabled="{{isRunning}}">Stage 1</button>
+    <button class="modeBtn {{mode==='stage2'?'active':''}}" bindtap="setMode" data-mode="stage2" disabled="{{isRunning}}">Stage 2</button>
+  </view>
+
+  <view class="card">
+    <!-- Stage1 Config -->
+    <view wx:if="{{mode==='stage1'}}">
+      <view class="row">
+        <view class="label">BPM：{{bpm}}</view>
+        <slider min="60" max="80" step="1" value="{{bpm}}" bindchange="onBpmChange" disabled="{{isRunning}}"/>
+      </view>
+      <view class="tip">60秒一轮，命中率 ≥ 70% 解锁 Stage2</view>
+    </view>
+
+    <!-- Stage2 Config -->
+    <view wx:if="{{mode==='stage2'}}">
+      <view class="row">
+        <view class="label">bpm_cur：{{bpmCur}}｜range：{{range}}</view>
+      </view>
+      <view class="tip">
+        每10次点击更新一次难度：根据 acc10 & mean_err 调整 bpm_cur / range
+      </view>
+    </view>
+
+    <!-- Metronome -->
+    <view class="metronome">
+      <view class="circle {{isRunning ? 'running' : ''}}" style="animation-duration: {{beatIntervalMs}}ms;">
+        <view class="monkeyWrap {{monkeyHit ? 'hit' : ''}}">
+          <view class="monkeyBg"></view>
+
+          <!-- Drum -->
+          <view class="drum">
+            <view class="drumHead"></view>
+          </view>
+
+          <!-- Monkey -->
+          <view class="monkey">
+            <view class="head">
+              <view class="ear earL"></view>
+              <view class="ear earR"></view>
+              <view class="face">
+                <view class="eye eyeL"></view>
+                <view class="eye eyeR"></view>
+                <view class="mouth"></view>
+              </view>
+            </view>
+            <view class="body"></view>
+          </view>
+
+          <!-- Arms + sticks -->
+          <view class="arm armL"><view class="stick"></view></view>
+          <view class="arm armR"><view class="stick"></view></view>
+        </view>
+      </view>
+      <view class="hint">{{isRunning ? '跟着节拍点下面按钮' : '设置好后开始'}}</view>
+    </view>
+
+    <!-- Buttons -->
+    <view class="btnRow">
+      <button class="btn" type="primary" bindtap="onStart" disabled="{{isRunning}}">
+        开始 {{durationSec}} 秒
+      </button>
+      <button class="btn" bindtap="onStop" disabled="{{!isRunning}}">停止</button>
+    </view>
+
+    <!-- Tap -->
+    <view class="tapArea">
+      <button class="tapBtn" bindtap="onTapBeat" disabled="{{!isRunning}}">点我打拍</button>
+    </view>
+
+    <!-- Live Stats -->
+    <view class="stats">
+      <view class="stat">剩余：{{remainingSec}}s</view>
+      <view class="stat">点击：{{tapCount}}</view>
+      <view class="stat">命中：{{hitCount}}</view>
+      <view class="stat">命中率：{{accuracyPct}}%</view>
+      <view class="stat">最近误差：{{lastErrMs}}ms</view>
+    </view>
+
+    <!-- Stage2 Live DDA Stats -->
+    <view class="stats" wx:if="{{mode==='stage2'}}">
+      <view class="stat">acc10：{{acc10Pct}}%</view>
+      <view class="stat">mean_err(10)：{{meanErr10}}ms</view>
+      <view class="stat">下一轮BPM：{{nextBpm}}</view>
+    </view>
+
+    <!-- Result -->
+    <view class="result" wx:if="{{!isRunning && hasResult}}">
+      <view class="resultLine">本轮结果：命中率 {{accuracyPct}}%</view>
+
+      <view wx:if="{{mode==='stage1'}}">
+        <view class="resultLine" wx:if="{{passed}}">
+          ✅ Stage1 达标：已解锁 Stage2
+        </view>
+        <view class="resultLine" wx:if="{{!passed}}">
+          ❗未达标（需要 ≥ 70%）
+        </view>
+      </view>
+
+      <view class="btnRow">
+        <button class="btn" bindtap="onExport" disabled="{{logs.length===0}}">导出数据（复制）</button>
+        <button class="btn" bindtap="onReset">清空结果</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <view>导出字段：beatTime, tapTime, errMs, hit, bpm, tolMs, mode, bpmCur, range, acc10, meanErr10</view>
+  </view>
+</view>
