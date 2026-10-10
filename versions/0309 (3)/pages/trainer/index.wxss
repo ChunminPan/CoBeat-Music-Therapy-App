@@ -1,0 +1,242 @@
+.page { padding: 18px; }
+.title { font-size: 20px; font-weight: 700; }
+.subtitle { margin-top: 6px; color: #555; font-size: 12px; line-height: 18px; }
+
+
+.topBpmCard {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #F8FAFF;
+  border: 1px solid #E3EAF8;
+}
+
+.topBpmHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.topBpmTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #24324A;
+}
+
+.topBpmValue {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #24324A;
+}
+
+.topBpmBadge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.topBpmBadge.locked {
+  background: #F3F4F6;
+  color: #6B7280;
+}
+
+.topBpmBadge.unlocked {
+  background: #E7F8EE;
+  color: #1F7A45;
+}
+
+.modeRow { display: flex; gap: 10px; margin-top: 12px; }
+.modeBtn { flex: 1; border-radius: 999px; font-size: 14px; }
+.active { font-weight: 700; }
+
+.card { margin-top: 14px; padding: 14px; border: 1px solid #eee; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+
+.row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.label { font-weight: 600; }
+.tip { color: #666; font-size: 12px; margin-top: 6px; }
+
+.metronome { display: flex; flex-direction: column; align-items: center; margin: 16px 0 10px; }
+.metronomeStage {
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+/* NOTE: 已移除圆形节拍器的 pulse 动画。
+   这里原本残留了 @keyframes 的片段（45%/100%/}），会导致 WXSS 编译报错。
+   保留注释占位以避免误删回归。 */
+
+.hint { margin-top: 10px; color: #666; font-size: 12px; }
+
+.btnRow { display: flex; gap: 10px; margin-top: 10px; }
+.btn { flex: 1; }
+
+.tapArea { margin-top: 14px; }
+.tapBtn { height: 52px; font-size: 16px; }
+
+.stats { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 10px; }
+.stat { font-size: 12px; color: #333; padding: 6px 10px; border: 1px solid #eee; border-radius: 999px; }
+
+.result { margin-top: 14px; padding-top: 10px; border-top: 1px solid #eee; }
+.resultLine { margin-top: 6px; }
+
+.footer { margin-top: 14px; color: #777; font-size: 11px; line-height: 16px; }
+
+/* ===== Monkey Drummer (原创简化版，WXML+WXSS 绘制) ===== */
+.monkeyWrap {
+  width: 86px;
+  height: 86px;
+  position: relative;
+}
+
+/* Drum */
+.drum {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  width: 50px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  background: #E96B5A;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.18);
+}
+.drumHead {
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 42px;
+  height: 10px;
+  border-radius: 999px;
+  background: #F3D6A8;
+  opacity: 0.95;
+}
+
+/* Monkey base */
+.monkey {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: 54px;
+  height: 52px;
+  transform: translateX(-50%);
+}
+
+.head {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 40px;
+  height: 34px;
+  transform: translateX(-50%);
+  border-radius: 18px;
+  background: #7A4E2C;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.12);
+}
+
+.ear {
+  position: absolute;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7A4E2C;
+}
+.earL { left: -6px; }
+.earR { right: -6px; }
+
+.face {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 30px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 12px;
+  background: #F3D6A8;
+}
+
+.eye {
+  position: absolute;
+  top: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #222;
+}
+.eyeL { left: 8px; }
+.eyeR { right: 8px; }
+
+.mouth {
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 10px;
+  height: 6px;
+  transform: translateX(-50%);
+  border-bottom: 2px solid rgba(0,0,0,0.35);
+  border-radius: 0 0 10px 10px;
+}
+
+.body {
+  position: absolute;
+  left: 50%;
+  top: 28px;
+  width: 36px;
+  height: 24px;
+  transform: translateX(-50%);
+  border-radius: 14px;
+  background: #7A4E2C;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.12);
+}
+
+/* Arms + sticks */
+.arm {
+  position: absolute;
+  top: 24px;
+  width: 18px;
+  height: 10px;
+  border-radius: 999px;
+  background: #7A4E2C;
+  transform-origin: 3px 5px;
+}
+
+.armL {
+  left: 10px;
+  transform: rotate(-20deg) translateY(0);
+}
+.armR {
+  right: 10px;
+  transform: rotate(20deg) translateY(0);
+}
+
+.stick {
+  position: absolute;
+  left: 12px;
+  top: 4px;
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: #D3B58C;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.12);
+}
+
+
+
+.stage2TopRow { margin-bottom: 4px; }
+.prepBadge {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #F6F8FC;
+  color: #3B4A6B;
+  font-size: 12px;
+  line-height: 18px;
+}
