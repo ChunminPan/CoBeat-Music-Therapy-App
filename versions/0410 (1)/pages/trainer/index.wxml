@@ -1,0 +1,275 @@
+<view class="page">
+  <view class="helpEntryRow">
+    <view class="rulesHelpBtn" bindtap="openRulesModal">?</view>
+  </view>
+  <view class="topBpmCard" wx:if="{{mode==='stage1'}}">
+    <view class="topBpmHeader">
+      <view class="topBpmTitle">固定节拍节奏选择</view>
+      <view class="topBpmBadge {{stage1BpmUnlocked ? 'unlocked' : 'locked'}}">{{stage1BpmUnlocked ? '已解锁' : '未解锁'}}</view>
+    </view>
+    <view class="topBpmValue">{{bpm}} BPM</view>
+    <slider
+      min="{{stage1BpmMin}}"
+      max="{{stage1BpmMax}}"
+      step="1"
+      value="{{bpm}}"
+      bindchange="onBpmChange"
+      disabled="{{isRunning || !stage1BpmUnlocked}}"
+    />
+    <view class="tip" wx:if="{{stage1BpmUnlocked}}">已解锁后可为固定节拍选择速度；开始训练后会锁定当前值，整轮保持固定节奏。</view>
+    <view class="tip" wx:else>先按默认节奏完成一次固定节拍训练；解锁后，这里会开放固定 BPM 选择。</view>
+  </view>
+
+  <view class="modeRow">
+    <button class="modeBtn {{mode==='stage1'?'active':''}}" bindtap="setMode" data-mode="stage1" disabled="{{isRunning}}">固定节奏</button>
+    <button class="modeBtn {{mode==='stage2'?'active':''}}" bindtap="setMode" data-mode="stage2" disabled="{{isRunning}}">流动节奏</button>
+    <button class="modeBtn {{mode==='stage3'?'active':''}}" bindtap="setMode" data-mode="stage3" disabled="{{isRunning}}">协同节奏</button>
+  </view>
+
+  <view class="card">
+    <view wx:if="{{mode==='stage1'}}">
+      <view class="row">
+        <view class="label">当前固定 BPM：{{bpm}}</view>
+      </view>
+
+      <view class="metronome">
+        <view class="metronomeStage">
+          <drum-character hitSeq="{{drumHitSeq}}"></drum-character>
+        </view>
+        <view class="hint">{{isRunning ? '跟着节拍点下面按钮' : '设置好后开始'}}</view>
+      </view>
+
+      <view class="btnRow">
+        <button class="btn" type="primary" bindtap="onStart" disabled="{{isRunning}}">开始 {{durationSec}} 秒</button>
+        <button class="btn" bindtap="onStop" disabled="{{!isRunning}}">停止</button>
+      </view>
+
+      <view class="tapArea">
+        <button class="tapBtn" bindtap="onTapBeat" disabled="{{!isRunning}}">点我打拍</button>
+      </view>
+
+      <view class="stats">
+        <view class="stat">剩余：{{remainingSec}}s</view>
+        <view class="stat">拍数：{{beatCount}}</view>
+        <view class="stat">命中：{{hitCount}}</view>
+        <view class="stat">命中率：{{accuracyPct}}%</view>
+        <view class="stat">最近误差：{{lastErrMs}}ms</view>
+      </view>
+
+      <view class="result" wx:if="{{!isRunning && hasResult}}">
+        <view class="resultLine">本轮结果：命中率 {{accuracyPct}}%</view>
+        <view class="resultLine" wx:if="{{passed}}">✅ 固定节拍达标：已解锁连续变速与家长陪同</view>
+        <view class="resultLine" wx:if="{{!passed}}">❗未达标（需要 ≥ 70%）</view>
+        <view class="btnRow">
+          <button class="btn" bindtap="onExport" disabled="{{logCount===0}}">导出数据（复制）</button>
+          <button class="btn" bindtap="onReset">清空结果</button>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{mode==='stage2'}}">
+      <view class="row stage2TopRow">
+        <view class="label">起始速度：{{bpmBase}}｜当前速度：{{bpmCur}}</view>
+      </view>
+      <view class="row stage2TopRow">
+        <view class="label">变化幅度：{{range}}｜每次变化：{{delta}}｜目标速度：{{bpmTarget}}</view>
+      </view>
+      <view class="prepBadge">{{stage2PhaseText}}</view>
+
+      <view class="metronome">
+        <view class="metronomeStage">
+          <drum-character hitSeq="{{drumHitSeq}}"></drum-character>
+        </view>
+        <view class="hint">{{isRunning ? '跟着节拍点下面按钮' : '设置好后开始'}}</view>
+      </view>
+
+      <view class="btnRow">
+        <button class="btn" type="primary" bindtap="onStart" disabled="{{isRunning}}">开始 {{durationSec}} 秒</button>
+        <button class="btn" bindtap="onStop" disabled="{{!isRunning}}">停止</button>
+      </view>
+
+      <view class="tapArea">
+        <button class="tapBtn" bindtap="onTapBeat" disabled="{{!isRunning}}">点我打拍</button>
+      </view>
+
+      <view class="stats">
+        <view class="stat">剩余：{{remainingSec}}s</view>
+        <view class="stat">拍数：{{beatCount}}</view>
+        <view class="stat">命中：{{hitCount}}</view>
+        <view class="stat">命中率：{{accuracyPct}}%</view>
+        <view class="stat">最近误差：{{lastErrMs}}ms</view>
+      </view>
+
+      <view class="stats">
+        <view class="stat">Block：{{blockIndex}}</view>
+        <view class="stat">acc10：{{acc10Pct}}%</view>
+        <view class="stat">mean_err：{{meanErr10}}ms</view>
+        <view class="stat">状态：{{stage2PhaseText}}</view>
+      </view>
+
+      <view class="result" wx:if="{{!isRunning && hasResult}}">
+        <view class="resultLine">本轮结果：命中率 {{accuracyPct}}%</view>
+        <view class="resultLine">✅ 连续变速训练已完成</view>
+        <view class="btnRow">
+          <button class="btn" bindtap="onExport" disabled="{{logCount===0}}">导出数据（复制）</button>
+          <button class="btn" bindtap="onReset">清空结果</button>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{mode==='stage3'}}" class="stage3Wrap">
+      <view class="stage3HeaderCard">
+        <view class="stage3HeaderTop">
+          <view class="stage3HeaderTitle">家长陪同训练</view>
+          <view class="topBpmBadge {{stage3Unlocked ? 'unlocked' : 'locked'}}">{{stage3Unlocked ? '已解锁' : '未解锁'}}</view>
+        </view>
+        <view class="tip">左边为家长区，右边为孩子区。家长和孩子按顺序交替点击。</view>
+      </view>
+
+      <view class="stage3Menu" wx:if="{{!isRunning}}">
+        <view class="stage3MenuTitle">请选择阶段</view>
+
+        <view class="stage3PhaseCard {{stage3SelectedPhase===1?'selected':''}} {{!stage3Unlocked?'locked':''}}" bindtap="onSelectStage3Phase" data-phase="1">
+          <view class="stage3PhaseMain">
+            <view>
+              <view class="stage3PhaseTitle">第一阶段</view>
+              <view class="stage3PhaseDesc">60 秒｜每拍换人：家长、孩子、家长、孩子……</view>
+            </view>
+            <view class="stage3PhaseBadge {{stage3Phase1Passed ? 'passed' : (stage3Unlocked ? 'ready' : 'locked')}}">{{stage3Phase1Passed ? '已通过' : (stage3Unlocked ? '可进入' : '未解锁')}}</view>
+          </view>
+        </view>
+
+        <view class="stage3PhaseCard {{stage3SelectedPhase===2?'selected':''}} {{!stage3Phase1Passed?'locked':''}}" bindtap="onSelectStage3Phase" data-phase="2">
+          <view class="stage3PhaseMain">
+            <view>
+              <view class="stage3PhaseTitle">第二阶段</view>
+              <view class="stage3PhaseDesc">60 秒｜每两拍换人：家长、家长、孩子、孩子……</view>
+            </view>
+            <view class="stage3PhaseBadge {{stage3Phase2Passed ? 'passed' : (stage3Phase1Passed ? 'ready' : 'locked')}}">{{stage3Phase2Passed ? '已通过' : (stage3Phase1Passed ? '可进入' : '锁定')}}</view>
+          </view>
+          <view class="stage3PhaseLock" wx:if="{{!stage3Phase1Passed}}">先通过第一阶段后解锁</view>
+        </view>
+
+        <view class="stage3PhaseCard {{stage3SelectedPhase===3?'selected':''}} {{!stage3Phase2Passed?'locked':''}}" bindtap="onSelectStage3Phase" data-phase="3">
+          <view class="stage3PhaseMain">
+            <view>
+              <view class="stage3PhaseTitle">第三阶段</view>
+              <view class="stage3PhaseDesc">60 秒｜每 8 拍第 8 拍显示“停”，双方都不点击</view>
+            </view>
+            <view class="stage3PhaseBadge {{stage3Phase3Completed ? 'passed' : (stage3Phase2Passed ? 'ready' : 'locked')}}">{{stage3Phase3Completed ? '已完成' : (stage3Phase2Passed ? '可进入' : '锁定')}}</view>
+          </view>
+          <view class="stage3PhaseLock" wx:if="{{!stage3Phase2Passed}}">先通过第二阶段后解锁</view>
+        </view>
+
+        <view class="stage3IntroCard">
+          <view class="stage3IntroTitle">当前选择：{{stage3CurrentPhaseName}}</view>
+          <view class="btnRow">
+            <button class="btn" type="primary" bindtap="onStart" disabled="{{!stage3Unlocked || (stage3SelectedPhase===2 && !stage3Phase1Passed) || (stage3SelectedPhase===3 && !stage3Phase2Passed)}}">开始 {{stage3CurrentPhaseName}}</button>
+            <button class="btn" bindtap="onReset">清空结果</button>
+          </view>
+        </view>
+      </view>
+
+      <view class="stage3Train" wx:if="{{isRunning}}">
+        <view class="stage3RunHeader">
+          <view class="stage3RunTitle">{{stage3CurrentPhaseName}}进行中</view>
+          <view class="stage3RunSub">{{stage3StatusText}}</view>
+        </view>
+
+        <view class="stage3Board">
+          <view class="stage3CenterStop" wx:if="{{stage3StopBeat}}">🛑 停</view>
+
+          <view class="stage3Side parent {{stage3ActiveSide==='parent'?'active':''}} {{stage3ParentDim?'dim':''}}" bindtouchstart="onStage3SideTouchStart" bindtap="onStage3SideTap" data-side="parent">
+            <view class="stage3SideLabel">家长区</view>
+            <view class="stage3SideHint">{{stage3ActiveSide==='parent' && !stage3StopBeat ? '请点击' : (stage3StopBeat ? '这一拍不点' : '等待中')}} </view>
+          </view>
+
+          <view class="stage3Side child {{stage3ActiveSide==='child'?'active':''}} {{stage3ChildDim?'dim':''}} {{stage3ChildTapFlash?'tapFlash':''}} {{stage3ChildTapFeedbackType==='hit'?'feedback-hit':(stage3ChildTapFeedbackType==='miss'?'feedback-miss':'feedback-ack')}}" bindtouchstart="onStage3SideTouchStart" bindtap="onStage3SideTap" data-side="child">
+            <view class="stage3SideLabel">孩子区</view>
+            <view class="stage3SideHint">{{stage3ActiveSide==='child' && !stage3StopBeat ? '请点击' : (stage3StopBeat ? '这一拍不点' : '等待中')}} </view>
+            <view class="stage3TapAck {{stage3ChildTapFeedbackVisible?'show':''}} {{stage3ChildTapFeedbackType}}" wx:if="{{stage3ChildTapFeedbackVisible}}">{{stage3ChildTapFeedbackText}}</view>
+            <view class="stage3TapPulse" wx:if="{{stage3ChildTapFlash}}"></view>
+          </view>
+        </view>
+
+        <view class="stats">
+          <view class="stat">剩余：{{remainingSec}}s</view>
+          <view class="stat">已评估拍数：{{stage3ScoredBeatCount}}</view>
+          <view class="stat">孩子命中：{{stage3ChildCorrectCount}}</view>
+          <view class="stat">孩子命中率：{{stage3ChildAccPct}}%</view>
+          <view class="stat">当前拍号：{{beatCount}}</view>
+        </view>
+
+        <view class="btnRow">
+          <button class="btn" bindtap="onStop">停止本阶段</button>
+        </view>
+      </view>
+
+      <view class="result" wx:if="{{mode==='stage3' && !isRunning && hasResult}}">
+        <view class="resultLine">{{stage3CurrentPhaseName}}结果：孩子命中率 {{stage3ChildAccPct}}%</view>
+        <view class="resultLine" wx:if="{{passed && stage3CurrentPhase===1}}">✅ 第一阶段已通过，已解锁第二阶段</view>
+        <view class="resultLine" wx:if="{{passed && stage3CurrentPhase===2}}">✅ 第二阶段已通过，已解锁第三阶段</view>
+        <view class="resultLine" wx:if="{{passed && stage3CurrentPhase===3}}">✅ 第三阶段完成并达标</view>
+        <view class="resultLine" wx:if="{{!passed}}">❗未达标（需要 ≥ 70%）</view>
+        <view class="btnRow">
+          <button class="btn" bindtap="onExport" disabled="{{logCount===0}}">导出数据（复制）</button>
+          <button class="btn" bindtap="onReset">清空结果</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <view>连续变速导出以系统拍为中心；家长陪同导出包含每拍应答侧、孩子是否该点、孩子是否在窗口内命中、以及孩子整拍抑制是否成功。</view>
+  </view>
+
+
+  <view class="rulesMask" wx:if="{{showRulesModal}}" catchtouchmove="noop">
+    <view class="rulesDialog" catchtap="noop">
+      <view class="rulesHeader">
+        <view class="rulesTitle">节拍训练说明</view>
+        <view class="rulesClose" bindtap="closeRulesModal">×</view>
+      </view>
+
+      <scroll-view scroll-y="true" class="rulesScroll">
+        <view class="rulesLead">节拍训练分为 3 个部分。</view>
+        <view class="rulesText">建议按照顺序完成，这样会更容易熟悉规则，也能逐步进入后面的训练内容。</view>
+
+        <view class="rulesSectionTitle">一、稳定节奏</view>
+        <view class="rulesText">这一部分的节拍速度保持不变。</view>
+        <view class="rulesSubTitle">你需要做什么：</view>
+        <view class="rulesText">听到节拍后点击按钮，尽量跟上每一拍。</view>
+        <view class="rulesText">完成一次训练，并达到 70% 正确率后，你也可以开始自己选择固定节拍的 BPM。</view>
+
+        <view class="rulesSectionTitle">二、流动节奏</view>
+        <view class="rulesText">这一部分的节拍速度会在训练过程中慢慢变化。</view>
+        <view class="rulesSubTitle">你需要做什么：</view>
+        <view class="rulesText">不用提前判断速度会怎么变，只要继续听当前的节拍，并跟着点击就可以。</view>
+        <view class="rulesSubTitle">解锁规则：</view>
+        <view class="rulesText">“稳定节奏”达到 70% 正确率后解锁。</view>
+
+        <view class="rulesSectionTitle">三、协同节奏</view>
+        <view class="rulesText">这一部分需要家长或朋友和孩子一起完成。</view>
+        <view class="rulesSubTitle">你需要做什么：</view>
+        <view class="rulesText">训练开始后，页面会提示当前该由谁点击，按照提示完成就可以。</view>
+        <view class="rulesSubTitle">阶段说明：</view>
+        <view class="rulesText">第一阶段：家长和孩子一拍一拍轮流点击。</view>
+        <view class="rulesText">第二阶段：家长连续点击两拍，孩子连续点击两拍，再继续交替。</view>
+        <view class="rulesText">第三阶段：在轮流点击的基础上，看到“停”时，双方都不要点击。</view>
+        <view class="rulesSubTitle">解锁规则：</view>
+        <view class="rulesText">“稳定节奏”达到 70% 正确率后解锁。</view>
+        <view class="rulesText">三个阶段也需要按顺序完成。</view>
+
+        <view class="rulesSectionTitle">小提示</view>
+        <view class="rulesText">开始训练前，可以先看一下当前模式的规则。</view>
+        <view class="rulesText">训练时不用着急，先听清节拍，再跟着点会更容易完成。</view>
+        <view class="rulesText">每次训练的目标是达到 70% 正确率，没有达到要求也没关系，可以再试一次。</view>
+      </scroll-view>
+
+      <view class="rulesFooter">
+        <button class="rulesConfirmBtn" type="primary" bindtap="closeRulesModal">我知道了</button>
+      </view>
+    </view>
+  </view>
+
+</view>

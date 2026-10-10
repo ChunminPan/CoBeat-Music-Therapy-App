@@ -1,0 +1,62 @@
+<!-- pages/record-list/index.wxml -->
+<view class="container">
+  <!-- 自定义顶部栏 (与 melody-maker 风格一致) -->
+  <view class="app-bar">
+    <view class="icon-btn" bindtap="onBack">
+      <image class="icon" src="/images/back.png" mode="aspectFit" />
+    </view>
+    <text class="app-bar-title">记录列表</text>
+    <!-- 右侧占位保持对称 (无功能) -->
+    <view class="icon-placeholder"></view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="list-content">
+    <!-- 列表统计卡片 (轻量化) -->
+    <view class="stats-card" wx:if="{{records.length > 0}}">
+      <text class="stats-text">共有 {{records.length}} 条记录</text>
+    </view>
+
+    <!-- 列表区域 (滚动) -->
+    <scroll-view scroll-y class="list-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="list-container">
+        <!-- 空状态 -->
+        <view class="empty-state" wx:if="{{records.length === 0}}">
+          <image class="empty-icon" src="/images/note.png" mode="aspectFit" />
+          <text class="empty-text">暂无记录，去创作吧～</text>
+        </view>
+
+        <!-- 记录卡片循环 -->
+        <view class="record-card" wx:for="{{records}}" wx:key="id" data-id="{{item.id}}">
+          <!-- 左侧装饰色块 (根据音符号随机或固定) -->
+          <view class="card-accent" style="background-color: {{item.color}};"></view>
+
+          <view class="card-info">
+            <view class="info-header">
+              <text class="record-name">{{item.name}}</text>
+              <text class="record-count">{{item.noteCount}} 个音符</text>
+            </view>
+            <view class="info-footer">
+              <image class="time-icon" src="/images/time.png" mode="aspectFit" />
+              <text class="record-date">{{item.date}}</text>
+            </view>
+          </view>
+
+          <!-- 删除按钮 (复用 action-btn 风格) -->
+          <view class="action-btn delete-btn" bindtap="confirmDelete" data-id="{{item.id}}">
+            <image class="action-icon" src="/images/delete.png" mode="aspectFit" />
+            <text class="action-text">删除</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 底部批量操作 (可选) -->
+    <view class="bottom-actions" wx:if="{{records.length > 0}}">
+      <view class="btn btn-secondary btn-large btn-block" bindtap="clearAllRecords">
+        <image class="btn-icon" src="/images/clear.png" mode="aspectFit" />
+        <text>清空所有记录</text>
+      </view>
+    </view>
+  </view>
+</view>

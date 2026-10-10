@@ -1,0 +1,95 @@
+<!-- pages/home/index.wxml -->
+<view class="container">
+  <!-- Top App Bar -->
+  <view class="app-bar">
+    <text class="app-bar-title">Music Therapy</text>
+    <view class="icon-btn" bindtap="onSettings">
+      <image class="icon" src="/images/settings.png" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="page-content">
+    
+    <!-- 卡片 A：节拍训练 -->
+    <view class="card feature-card">
+      <view class="feature-header">
+        <view class="feature-info">
+          <text class="feature-title">节拍训练</text>
+          <text class="feature-subtitle">跟着节拍点一点</text>
+        </view>
+        <view class="feature-icon feature-icon-primary">
+          <image class="icon-large" src="/images/drum.png" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="btn btn-primary btn-large" bindtap="onStartTraining">
+        开始训练
+      </view>
+    </view>
+
+    <!-- 卡片 B：即兴创作 -->
+    <view class="card feature-card">
+      <view class="feature-header">
+        <view class="feature-info">
+          <text class="feature-title">即兴创作</text>
+          <text class="feature-subtitle">点格子做旋律</text>
+        </view>
+        <view class="feature-icon feature-icon-success">
+          <image class="icon-large" src="/images/grid.png" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="btn btn-primary btn-large" bindtap="onStartCreation">
+        开始创作
+      </view>
+    </view>
+
+    <!-- 最近记录/我的作品 -->
+    <view class="card-small recent-card">
+      <view class="recent-header">
+        <text class="recent-title">最近记录</text>
+        <image class="icon-small" src="/images/music.png" mode="aspectFit" />
+      </view>
+
+      <!-- Tab切换 -->
+      <view class="tab-container">
+        <view class="tab-item {{activeTab === 'training' ? 'tab-active' : ''}}" bindtap="switchTab" data-tab="training">
+          <text class="tab-text">节拍训练</text>
+        </view>
+        <view class="tab-item {{activeTab === 'improv' ? 'tab-active' : ''}}" bindtap="switchTab" data-tab="improv">
+          <text class="tab-text">即兴创作</text>
+        </view>
+      </view>
+
+      <!-- 训练记录列表 -->
+      <view wx:if="{{activeTab === 'training'}}" class="recent-list">
+        <view wx:if="{{trainingRecords.length > 0}}">
+          <view wx:for="{{trainingRecords}}" wx:key="id" class="recent-item">
+            <image class="recent-icon" src="/images/clock.png" mode="aspectFit" />
+            <text class="recent-label">训练</text>
+            <text class="recent-value">命中率 {{item.meta.accuracy||0 }}%</text>
+            <text class="recent-time">{{item.meta.date}}</text>
+          </view>
+        </view>
+        <view wx:else class="recent-empty">
+          <text class="text-muted">还没有训练记录，开始你的第一次练习吧！</text>
+        </view>
+      </view>
+
+      <!-- 创作记录列表 -->
+      <view wx:if="{{activeTab === 'improv'}}" class="recent-list">
+        <view wx:if="{{improvRecords.length > 0}}">
+          <view wx:for="{{improvRecords}}" wx:key="id" class="recent-item" bindtap="onImprovItemTap" data-id="{{item.id}}">
+            <image class="recent-icon" src="/images/music.png" mode="aspectFit" />
+            <text class="recent-label">作品</text>
+            <text class="recent-value">{{item.meta.name || '未命名作品'}}</text>
+            <text class="recent-time">{{item.meta.date}}</text>
+          </view>
+        </view>
+        <view wx:else class="recent-empty">
+          <text class="text-muted">还没有创作记录，开始你的第一次创作吧！</text>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>
