@@ -1,0 +1,167 @@
+<!-- pages/melody-maker/index.wxml -->
+<view class="container">
+  <!-- Top App Bar -->
+  <view class="app-bar">
+    <view class="icon-btn" bindtap="onBack">
+      <image class="icon" src="/images/back.png" mode="aspectFit" />
+    </view>
+    <text class="app-bar-title">即兴创作</text>
+    <view class="icon-btn" bindtap="onHelp">
+      <image class="icon" src="/images/help.png" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="melody-content">
+    
+    <!-- 音符网格 -->
+    <scroll-view scroll-x class="grid-scroll">
+      <view class="grid-container">
+        <!-- 列标签 -->
+        <view class="grid-header">
+          <view class="note-label-col"></view>
+          <view wx:for="{{16}}" wx:key="index" class="step-label">
+            <text>{{index + 1}}</text>
+          </view>
+        </view>
+
+        <!-- 网格行 -->
+        <view wx:for="{{gridRows}}" wx:for-item="row" wx:for-index="rowIdx" wx:key="rowIdx" class="grid-row">
+          <!-- 音符名称 -->
+          <view class="note-label">
+            <text>{{noteNames[rowIdx]}}</text>
+          </view>
+          
+          <!-- 音符格子 -->
+          <view wx:for="{{row}}" wx:for-item="hasNote" wx:for-index="colIdx" wx:key="colIdx" 
+                class="note-cell {{hasNote ? 'note-active' : ''}} {{colIdx === currentStep && isPlaying ? 'note-playing' : ''}}"
+                bindtap="toggleNote"
+                data-row="{{rowIdx}}"
+                data-col="{{colIdx}}">
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 播放控制 -->
+    <view class="control-card">
+      <view class="control-row">
+        <view class="play-btn {{isPlaying ? 'play-btn-active' : ''}}" bindtap="togglePlay">
+          <image class="play-icon" src="/images/{{isPlaying ? 'pause' : 'play'}}.png" mode="aspectFit" />
+        </view>
+
+        <view class="speed-control">
+          <text class="speed-label">速度</text>
+          <slider class="speed-slider" 
+                  min="60" 
+                  max="180" 
+                  value="{{playbackSpeed}}" 
+                  bindchange="onSpeedChange"
+                  activeColor="var(--color-primary)"
+                  backgroundColor="var(--color-accent)" />
+          <text class="speed-value">{{playbackSpeed}}</text>
+        </view>
+      </view>
+
+      <view class="control-actions">
+        <view class="action-btn {{historyCount === 0 ? 'action-btn-disabled' : ''}}" bindtap="undo">
+          <image class="action-icon" src="/images/undo.png" mode="aspectFit" />
+          <text class="action-text">撤销</text>
+        </view>
+
+        <view class="action-btn {{!hasNotes ? 'action-btn-disabled' : ''}}" bindtap="clearGrid">
+          <image class="action-icon" src="/images/clear.png" mode="aspectFit" />
+          <text class="action-text">清空</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="bottom-actions">
+      <view class="btn btn-secondary btn-large btn-half {{!hasNotes ? 'btn-disabled' : ''}}" bindtap="saveDraft">
+        <image class="btn-icon" src="/images/save.png" mode="aspectFit" />
+        <text>保存草稿</text>
+      </view>
+      
+      <view class="btn btn-primary btn-large btn-half {{!hasNotes ? 'btn-disabled' : ''}}" bindtap="handleComplete">
+        <image class="btn-icon" src="/images/share.png" mode="aspectFit" />
+        <text>完成并导出</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 命名弹窗 -->
+  <view wx:if="{{showNamingModal}}" class="modal-overlay">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">命名你的练习</text>
+        <view class="modal-close" bindtap="closeNamingModal">
+          <image class="icon" src="/images/close.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <text class="modal-message">为这次练习起个名字吧！</text>
+        <input class="work-name-input" 
+               placeholder="例如：今天的节奏练习" 
+               value="{{workName}}"
+               bindinput="onNameInput"
+               focus="{{showNamingModal}}" />
+      </view>
+
+      <view class="modal-footer">
+        <view class="btn btn-secondary btn-large btn-half" bindtap="closeNamingModal">
+          取消
+        </view>
+        <view class="btn btn-primary btn-large btn-half" bindtap="saveWork">
+          保存
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导出分享弹窗 -->
+  <view wx:if="{{showExportModal}}" class="modal-overlay">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">导出分享</text>
+        <view class="modal-close" bindtap="closeExportModal">
+          <image class="icon" src="/images/close.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <view class="work-info-card">
+          <text class="work-info-name">{{savedWorkName}}</text>
+          <text class="work-info-count">{{noteCount}} 个音符</text>
+        </view>
+
+        <!-- 缩略预览 -->
+        <view class="preview-card">
+          <text class="preview-title">作品预览</text>
+          <view class="preview-grid">
+            <view wx:for="{{gridRows}}" wx:for-item="row" wx:for-index="rowIdx" wx:key="rowIdx" class="preview-row">
+              <view wx:for="{{row}}" wx:for-item="hasNote" wx:for-index="colIdx" wx:key="colIdx"
+                    class="preview-cell {{hasNote ? 'preview-cell-active' : ''}}">
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="success-badge">
+          <text>✓ 作品已保存</text>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <view class="btn btn-secondary btn-large btn-half" bindtap="closeExportModal">
+          关闭
+        </view>
+        <view class="btn btn-primary btn-large btn-half" bindtap="shareWork">
+          分享
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
