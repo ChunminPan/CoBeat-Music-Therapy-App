@@ -1,0 +1,89 @@
+<view class="page">
+  <view class="title">节律训练</view>
+  <view class="subtitle">
+    容忍窗 {{tolMs}}ms ｜Stage1：固定BPM｜Stage2：连续 60s，不分 round；按 10 个系统 beat 做 block + 固定 70 计算 delta
+  </view>
+
+  <view class="modeRow">
+    <button class="modeBtn {{mode==='stage1'?'active':''}}" bindtap="setMode" data-mode="stage1" disabled="{{isRunning}}">Stage 1</button>
+    <button class="modeBtn {{mode==='stage2'?'active':''}}" bindtap="setMode" data-mode="stage2" disabled="{{isRunning}}">Stage 2</button>
+  </view>
+
+  <view class="card">
+    <view wx:if="{{mode==='stage1'}}">
+      <view class="row">
+        <view class="label">BPM：{{bpm}}</view>
+        <slider min="60" max="80" step="1" value="{{bpm}}" bindchange="onBpmChange" disabled="{{isRunning}}"/>
+      </view>
+      <view class="tip">60 秒一轮，命中率 ≥ 70% 解锁 Stage2</view>
+    </view>
+
+    <view wx:if="{{mode==='stage2'}}">
+      <view class="row stage2TopRow">
+        <view class="label">bpm_base：{{bpmBase}}｜bpm_cur：{{bpmCur}}</view>
+      </view>
+      <view class="row stage2TopRow">
+        <view class="label">range：{{range}}｜delta：{{delta}}｜bpm_target：{{bpmTarget}}</view>
+      </view>
+      <view class="tip">
+        Stage 2 为单段连续 60s 训练：中间无 round 切换、无准备 2s、无节拍重启。每 10 个系统 beat 构成 1 个 block，DDA 只改 range，不直接改 bpm_cur。
+      </view>
+      <view class="prepBadge">{{stage2PhaseText}}</view>
+    </view>
+
+    <view class="metronome">
+      <view class="metronomeStage">
+        <drum-character hitSeq="{{drumHitSeq}}"></drum-character>
+      </view>
+      <view class="hint">{{isRunning ? '跟着节拍点下面按钮' : '设置好后开始'}}</view>
+    </view>
+
+    <view class="btnRow">
+      <button class="btn" type="primary" bindtap="onStart" disabled="{{isRunning}}">
+        开始 {{durationSec}} 秒
+      </button>
+      <button class="btn" bindtap="onStop" disabled="{{!isRunning}}">停止</button>
+    </view>
+
+    <view class="tapArea">
+      <button class="tapBtn" bindtap="onTapBeat" disabled="{{!isRunning}}">点我打拍</button>
+    </view>
+
+    <view class="stats">
+      <view class="stat">剩余：{{remainingSec}}s</view>
+      <view class="stat">Beats：{{beatCount}}</view>
+      <view class="stat">命中：{{hitCount}}</view>
+      <view class="stat">命中率：{{accuracyPct}}%</view>
+      <view class="stat">最近误差：{{lastErrMs}}ms</view>
+    </view>
+
+    <view class="stats" wx:if="{{mode==='stage2'}}">
+      <view class="stat">Block：{{blockIndex}}</view>
+      <view class="stat">acc10：{{acc10Pct}}%</view>
+      <view class="stat">mean_err(hit beats)：{{meanErr10}}ms</view>
+      <view class="stat">状态：{{stage2PhaseText}}</view>
+    </view>
+
+    <view class="result" wx:if="{{!isRunning && hasResult}}">
+      <view class="resultLine">本轮结果：命中率 {{accuracyPct}}%</view>
+
+      <view wx:if="{{mode==='stage1'}}">
+        <view class="resultLine" wx:if="{{passed}}">
+          ✅ Stage1 达标：已解锁 Stage2
+        </view>
+        <view class="resultLine" wx:if="{{!passed}}">
+          ❗未达标（需要 ≥ 70%）
+        </view>
+      </view>
+
+      <view class="btnRow">
+        <button class="btn" bindtap="onExport" disabled="{{logCount===0}}">导出数据（复制）</button>
+        <button class="btn" bindtap="onReset">清空结果</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <view>Stage2 为连续 60s 单段训练；导出仍以 beat 为中心：beatIndex, roundIndex(兼容字段), blockIndex, beatTime, bpm, hit, miss, errMs, extraTapCount, bpmTarget, range, delta</view>
+  </view>
+</view>
