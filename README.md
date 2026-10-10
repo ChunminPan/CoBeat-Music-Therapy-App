@@ -23,14 +23,14 @@ I preserved both major versions and smaller revisions of the mini-program. The a
 - **A date alone** (for example, `0309`) identifies the main saved version for that date.
 - **A date followed by a number in parentheses** (for example, `0309 (1)` or `0309 (2)`) identifies a smaller revision saved around that date. These include intermediate changes rather than separate major releases.
 
-The saved development history includes **28 snapshots**:
+The saved development history includes **27 snapshots**:
 
 | Date (MMDD) | Saved snapshots | Type |
 | --- | --- | --- |
 | February 12 | `0212` | Main version |
 | February 28 | `0228 (1)`–`0228 (6)` | Minor revisions |
 | March 3 | `0303` | Main version |
-| March 9 | `0309 (1)`–`0309 (6)`; `0309` | Minor revisions and main version |
+| March 9 | `0309 (1)`–`0309 (5)`; `0309` | Minor revisions and main version |
 | March 19 | `0319 (1)`–`0319 (2)` | Minor revisions |
 | April 10 | `0410 (1)`–`0410 (4)` | Minor revisions |
 | April 14 | `0414 (1)`–`0414 (4)` | Minor revisions |
