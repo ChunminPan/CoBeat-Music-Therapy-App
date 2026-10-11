@@ -21,7 +21,7 @@ I preserved both major versions and smaller revisions of the mini-program. The a
 - **A date alone** (for example, `0309`) identifies the main saved version for that date.
 - **A date followed by a number in parentheses** (for example, `0309 (1)` or `0309 (2)`) identifies a smaller revision saved around that date. These include intermediate changes rather than separate major releases.
 
-The saved development history includes **27 snapshots**:
+The saved development history includes **23 snapshots**:
 
 | Date (MMDD) | Saved snapshots | Type |
 | --- | --- | --- |
