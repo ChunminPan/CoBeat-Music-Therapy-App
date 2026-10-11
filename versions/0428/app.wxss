@@ -1,0 +1,206 @@
+/**
+ * 全局样式
+ * 音乐疗法训练 App - 儿童友好设计
+ */
+
+/* 全局变量定义 */
+page {
+  /* 色彩系统 */
+  --color-background: #F8F5F9;
+  --color-foreground: #44506A;
+  --color-card: #FFFCFD;
+  --color-card-foreground: #44506A;
+  
+  /* 主色 - 柔和蓝紫色 */
+  --color-primary: #8F95D8;
+  --color-primary-foreground: #FFFDFE;
+  --color-primary-pressed: #7D84C6;
+  
+  /* 次要按钮 - 浅灰 */
+  --color-secondary: #EFE8F4;
+  --color-secondary-foreground: #626B84;
+  --color-secondary-pressed: #E2D9EC;
+  
+  /* 成功状态 - 柔和绿色 */
+  --color-success: #95CDAF;
+  --color-success-foreground: #FFFDFE;
+  --color-success-light: #E4F3EA;
+  
+  /* 未命中/失败 - 柔和灰色 */
+  --color-miss: #DDD8E6;
+  --color-miss-foreground: #8B8FA2;
+  
+  /* 禁用状态 */
+  --color-disabled: #ECE8F0;
+  --color-disabled-foreground: #B6B1C1;
+  
+  --color-muted: #F2EEF5;
+  --color-muted-foreground: #7D8398;
+  --color-accent: #F7F0EF;
+  
+  /* 警告色 */
+  --color-warning: #F0CEA2;
+  
+  /* 边框 */
+  --color-border: rgba(123, 128, 152, 0.18);
+  --color-input-background: #FBF7FA;
+  --color-primary-soft: rgba(143, 149, 216, 0.16);
+  --color-lavender-soft: rgba(196, 181, 221, 0.18);
+  --color-peach-soft: rgba(241, 199, 173, 0.26);
+  --color-butter-soft: rgba(246, 224, 165, 0.24);
+  --color-mint-soft: rgba(160, 214, 188, 0.22);
+  --shadow-soft: rgba(108, 100, 138, 0.08);
+  --shadow-deep: rgba(108, 100, 138, 0.16);
+  
+  /* 圆角 */
+  --radius-sm: 24rpx;
+  --radius-md: 32rpx;
+  --radius-lg: 40rpx;
+  --radius-xl: 48rpx;
+  --radius-2xl: 64rpx;
+  
+  /* 字体大小 */
+  --text-xs: 24rpx;
+  --text-sm: 28rpx;
+  --text-base: 32rpx;
+  --text-lg: 36rpx;
+  --text-xl: 48rpx;
+  --text-2xl: 64rpx;
+  --text-3xl: 80rpx;
+  --text-4xl: 112rpx;
+  
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: -apple-system-font, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* 通用布局类 */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.page-content {
+  padding: 40rpx;
+}
+
+/* 卡片 */
+.card {
+  background-color: var(--color-card);
+  border-radius: var(--radius-2xl);
+  padding: 48rpx;
+  box-shadow: 0 12rpx 32rpx var(--shadow-soft);
+  border: 2rpx solid var(--color-border);
+}
+
+.card-small {
+  background-color: var(--color-card);
+  border-radius: var(--radius-xl);
+  padding: 40rpx;
+  box-shadow: 0 10rpx 24rpx rgba(108, 100, 138, 0.06);
+  border: 2rpx solid var(--color-border);
+}
+
+/* 按钮基础样式 */
+.btn {
+  border-radius: var(--radius-xl);
+  padding: 24rpx 48rpx;
+  min-height: 88rpx;
+  font-size: var(--text-base);
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.2s ease-out;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.btn-primary:active {
+  background-color: var(--color-primary-pressed);
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+}
+
+.btn-secondary:active {
+  background-color: var(--color-secondary-pressed);
+  transform: scale(0.98);
+}
+
+.btn-large {
+  padding: 32rpx 64rpx;
+  min-height: 112rpx;
+}
+
+.btn-disabled {
+  background-color: var(--color-disabled);
+  color: var(--color-disabled-foreground);
+}
+
+/* 文本样式 */
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-muted {
+  color: var(--color-muted-foreground);
+}
+
+.text-foreground {
+  color: var(--color-foreground);
+}
+
+/* 间距 */
+.mt-20 { margin-top: 40rpx; }
+.mt-30 { margin-top: 60rpx; }
+.mb-20 { margin-top: 40rpx; }
+.mb-30 { margin-bottom: 60rpx; }
+
+/* Flex 布局 */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* 圆角 */
+.rounded-full {
+  border-radius: 9999rpx;
+}
+
+/* 阴影 */
+.shadow {
+  box-shadow: 0 14rpx 28rpx var(--shadow-deep);
+}
