@@ -1,7 +1,5 @@
 # CoBeat
 
-**A WeChat Mini Program for rhythm practice and musical improvisation**
-
 ## About the project
 
 I developed CoBeat after leading Orff-inspired music activities with autistic children. In our in-person sessions, we practiced listening to and imitating rhythms, following changes in tempo, and responding to musical cues. But families also needed simple ways to continue these activities between lessons, without depending on a scheduled class or specialist.
