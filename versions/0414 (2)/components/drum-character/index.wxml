@@ -1,0 +1,4 @@
+<view class="wrap">
+  <!-- 三帧精灵图（更接近参考视频观感；仅切换 src，不改变布局尺寸） -->
+  <image class="sprite" src="{{spriteSrc}}" mode="aspectFit" />
+</view>

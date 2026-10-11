@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/intake/index",
+    "pages/trainer/index",
+    "pages/improv/index",
+    "pages/records/index",
+    "pages/privacy/privacy"
+  ],
+  "window": {
+    "navigationBarTitleText": "Music Therapy",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#ffffff"
+  }
+}

@@ -1,0 +1,41 @@
+/* pages/privacy/privacy.wxss */
+
+page {
+  background: #FFFFFF;
+}
+
+.privacy-page {
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #44506A;
+  margin-top: 24rpx;
+  margin-bottom: 12rpx;
+  line-height: 1.5;
+}
+
+.sub-title {
+  font-size: 28rpx;
+}
+
+.paragraph,
+.list-item {
+  font-size: 28rpx;
+  color: #44506A;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.paragraph {
+  margin-bottom: 12rpx;
+}
+
+.list-item {
+  padding-left: 1.8em;
+  text-indent: -1.2em;
+  margin-bottom: 8rpx;
+}
