@@ -32,8 +32,8 @@ The saved development history includes **27 snapshots**:
 | March 3 | `0303` | Main version |
 | March 9 | `0309 (1)`–`0309 (5)`; `0309` | Minor revisions and main version |
 | March 19 | `0319 (1)`–`0319 (2)` | Minor revisions |
-| April 10 | `0410 (1)`–`0410 (4)` | Minor revisions |
-| April 14 | `0414 (1)`–`0414 (4)` | Minor revisions |
+| April 10 | `0410 (1)`–`0410 (2)` | Minor revisions |
+| April 14 | `0414 (1)`–`0414 (2)` | Minor revisions |
 | April 26 | `0426` | Main version |
 | April 28 | `0428` | Main version |
 | April 30 | `0430` | Main version |
