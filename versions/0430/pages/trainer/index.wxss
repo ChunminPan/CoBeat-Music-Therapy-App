@@ -1,0 +1,840 @@
+.page { padding: 18px; background: var(--color-background); }
+
+.page > .topBpmCard:first-child,
+.page > .modeRow:first-child,
+.page > .helpEntryRow + .topBpmCard,
+.page > .helpEntryRow + .modeRow { margin-top: 0; }
+
+.topBpmCard {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(248, 243, 249, 0.96);
+  border: 1px solid rgba(143, 149, 216, 0.18);
+}
+
+.topBpmHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.topBpmTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.topBpmValue {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.topBpmBadge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.topBpmBadge.locked {
+  background: rgba(238, 233, 241, 0.9);
+  color: #80869D;
+}
+
+.topBpmBadge.unlocked {
+  background: rgba(149, 205, 175, 0.2);
+  color: #4E8D6A;
+}
+
+.modeRow { display: flex; gap: 10px; margin-top: 12px; }
+.modeBtn {
+  flex: 1;
+  border-radius: 999px;
+  font-size: 14px;
+  background: rgba(255, 252, 253, 0.96);
+  border: 1px solid rgba(143, 149, 216, 0.16);
+  color: #67708A;
+}
+
+.modeBtn.active {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 20px rgba(143, 149, 216, 0.18);
+}
+.active { font-weight: 700; }
+
+.card { margin-top: 14px; padding: 14px; background: rgba(255, 252, 253, 0.98); border: 1px solid rgba(123, 128, 152, 0.14); border-radius: 14px; box-shadow: 0 10px 22px rgba(108, 100, 138, 0.08); }
+
+.row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.label { font-weight: 600; color: var(--color-foreground); }
+.tip { color: #7D8398; font-size: 12px; margin-top: 6px; }
+
+.metronome { display: flex; flex-direction: column; align-items: center; margin: 16px 0 10px; }
+.metronomeStage {
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+/* NOTE: 已移除圆形节拍器的 pulse 动画。
+   这里原本残留了 @keyframes 的片段（45%/100%/}），会导致 WXSS 编译报错。
+   保留注释占位以避免误删回归。 */
+
+.hint { margin-top: 10px; color: #7D8398; font-size: 12px; }
+
+.btnRow { display: flex; gap: 10px; margin-top: 10px; }
+.btn {
+  flex: 1;
+  border-radius: 16px;
+  background: rgba(255, 252, 253, 0.98);
+  color: #616A84;
+  border: 1px solid rgba(123, 128, 152, 0.14);
+}
+
+.btnPrimary {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-color: var(--color-primary);
+}
+
+button.btn[disabled],
+button.tapBtn[disabled],
+button.modeBtn[disabled],
+.rulesConfirmBtn[disabled],
+.btnPrimary[disabled] {
+  background: var(--color-disabled) !important;
+  color: var(--color-disabled-foreground) !important;
+  border-color: transparent !important;
+  opacity: 1;
+}
+
+.tapArea { margin-top: 14px; }
+.tapBtn {
+  height: 80px;
+  font-size: 16px;
+  border-radius: 18px;
+  background: rgba(241, 199, 173, 0.36);
+  color: var(--color-foreground);
+  border: 1px solid rgba(231, 163, 143, 0.28);
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.tapBtn:active {
+  transform: scale(0.97);
+}
+
+.tapBtn.active {
+  background: #F4D1BE;
+  border-color: #E7A38F;
+  box-shadow: 0 0 0 6px rgba(231, 163, 143, 0.22);
+}
+
+.tapBtn.tapFlash {
+  transform: scale(0.985);
+}
+
+.tapBtnLabel {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.tapBtnHint {
+  font-size: 14px;
+  color: #6E7893;
+  margin-bottom: 4px;
+}
+
+.tapBtnFeedback {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  z-index: 3;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-foreground);
+  background: rgba(255, 252, 253, 0.94);
+  box-shadow: 0 6px 14px rgba(108, 100, 138, 0.12);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.tapBtnFeedback.show {
+  opacity: 1;
+}
+
+.tapBtnFeedback.ack {
+  color: #6B75BC;
+}
+
+.tapBtnFeedback.hit {
+  color: #5B936E;
+}
+
+.tapBtnFeedback.miss {
+  color: #B46A7B;
+}
+
+.tapBtnPulse {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(231, 163, 143, 0.16);
+  border: 2px solid rgba(231, 163, 143, 0.28);
+  z-index: 2;
+}
+
+.stats { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 10px; }
+.stat { font-size: 12px; color: #566179; padding: 6px 10px; border: 1px solid rgba(123, 128, 152, 0.14); border-radius: 999px; background: rgba(255, 252, 253, 0.9); }
+
+.result { margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(123, 128, 152, 0.14); }
+.resultLine { margin-top: 6px; }
+
+.footer { margin-top: 14px; color: #8A90A6; font-size: 11px; line-height: 16px; }
+
+/* ===== Monkey Drummer (原创简化版，WXML+WXSS 绘制) ===== */
+.monkeyWrap {
+  width: 86px;
+  height: 86px;
+  position: relative;
+}
+
+/* Drum */
+.drum {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  width: 50px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  background: #E7A38F;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.18);
+}
+.drumHead {
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 42px;
+  height: 10px;
+  border-radius: 999px;
+  background: #F3E2BF;
+  opacity: 0.95;
+}
+
+/* Monkey base */
+.monkey {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: 54px;
+  height: 52px;
+  transform: translateX(-50%);
+}
+
+.head {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 40px;
+  height: 34px;
+  transform: translateX(-50%);
+  border-radius: 18px;
+  background: #9B7B65;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.12);
+}
+
+.ear {
+  position: absolute;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #9B7B65;
+}
+.earL { left: -6px; }
+.earR { right: -6px; }
+
+.face {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 30px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 12px;
+  background: #F3E2BF;
+}
+
+.eye {
+  position: absolute;
+  top: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #4F4B52;
+}
+.eyeL { left: 8px; }
+.eyeR { right: 8px; }
+
+.mouth {
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 10px;
+  height: 6px;
+  transform: translateX(-50%);
+  border-bottom: 2px solid rgba(79, 75, 82, 0.35);
+  border-radius: 0 0 10px 10px;
+}
+
+.body {
+  position: absolute;
+  left: 50%;
+  top: 28px;
+  width: 36px;
+  height: 24px;
+  transform: translateX(-50%);
+  border-radius: 14px;
+  background: #9B7B65;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.12);
+}
+
+/* Arms + sticks */
+.arm {
+  position: absolute;
+  top: 24px;
+  width: 18px;
+  height: 10px;
+  border-radius: 999px;
+  background: #9B7B65;
+  transform-origin: 3px 5px;
+}
+
+.armL {
+  left: 10px;
+  transform: rotate(-20deg) translateY(0);
+}
+.armR {
+  right: 10px;
+  transform: rotate(20deg) translateY(0);
+}
+
+.stick {
+  position: absolute;
+  left: 12px;
+  top: 4px;
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: #DCC8A8;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.12);
+}
+
+
+
+.stage2InfoRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.stage2InfoChip {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(239, 232, 244, 0.82);
+  border: 1px solid rgba(143, 149, 216, 0.18);
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.stage3Wrap {
+  margin-top: 4px;
+}
+
+.stage3HeaderCard {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(250, 245, 249, 0.96);
+  border: 1px solid rgba(196, 181, 221, 0.22);
+}
+
+.stage3HeaderTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stage3HeaderTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.stage3Menu {
+  margin-top: 12px;
+}
+
+.stage3PhaseGuide {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(239, 232, 244, 0.72);
+  border: 1px solid rgba(143, 149, 216, 0.14);
+  color: #5E6784;
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.stage3MenuTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-foreground);
+  margin-bottom: 10px;
+}
+
+.stage3PhaseCard {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(123, 128, 152, 0.14);
+  background: rgba(255, 252, 253, 0.98);
+  margin-bottom: 10px;
+}
+
+.stage3PhaseCard.selected {
+  border-color: #A8AFEA;
+  box-shadow: 0 0 0 3px rgba(143, 149, 216, 0.18);
+}
+
+.stage3PhaseCard.locked {
+  opacity: 0.7;
+}
+
+.stage3PhaseMain {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stage3PhaseTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.stage3PhaseDesc {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #6F7892;
+}
+
+.stage3PhaseBadge {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stage3PhaseBadge.ready {
+  background: rgba(143, 149, 216, 0.14);
+  color: #6872B9;
+}
+
+.stage3PhaseBadge.passed {
+  background: rgba(149, 205, 175, 0.2);
+  color: #4E8D6A;
+}
+
+.stage3PhaseBadge.locked {
+  background: rgba(238, 233, 241, 0.9);
+  color: #80869D;
+}
+
+.stage3PhaseLock {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #9096AA;
+}
+
+.stage3IntroCard {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(246, 224, 165, 0.22);
+  border: 1px solid rgba(240, 206, 162, 0.42);
+}
+
+.stage3IntroTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #8C7250;
+}
+
+.stage3Train {
+  margin-top: 12px;
+}
+
+.stage3RunHeader {
+  text-align: center;
+}
+
+.stage3RunTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.stage3RunSub {
+  margin-top: 6px;
+  color: #6F7892;
+  font-size: 13px;
+}
+
+.stage3Board {
+  margin-top: 14px;
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+.stage3Side {
+  flex: 1;
+  min-height: 220px;
+  border-radius: 18px;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.15s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.stage3Side.parent {
+  background: rgba(241, 199, 173, 0.28);
+  border-color: rgba(231, 163, 143, 0.46);
+}
+
+.stage3Side.child {
+  background: rgba(189, 220, 244, 0.35);
+  border-color: rgba(143, 149, 216, 0.26);
+}
+
+.stage3Side.active.parent {
+  background: #F4D1BE;
+  border-color: #E7A38F;
+  box-shadow: 0 0 0 6px rgba(231, 163, 143, 0.22);
+}
+
+.stage3Side.active.child {
+  background: #DEE1F8;
+  border-color: #8F95D8;
+  box-shadow: 0 0 0 6px rgba(143, 149, 216, 0.18);
+}
+
+.stage3Side.dim {
+  opacity: 0.38;
+  filter: grayscale(0.2);
+}
+
+.stage3Side.tapFlash.child {
+  transform: scale(0.985);
+}
+
+.stage3Side.child.feedback-ack {
+  box-shadow: 0 0 0 8px rgba(143, 149, 216, 0.14);
+}
+
+.stage3Side.child.feedback-hit {
+  background: #E6F3EA;
+  border-color: #95CDAF;
+  box-shadow: 0 0 0 8px rgba(149, 205, 175, 0.2);
+}
+
+.stage3Side.child.feedback-miss {
+  background: #F8E5E8;
+  border-color: #D795A3;
+  box-shadow: 0 0 0 8px rgba(215, 149, 163, 0.18);
+}
+
+.stage3TapAck {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-foreground);
+  background: rgba(255, 252, 253, 0.94);
+  box-shadow: 0 8px 18px rgba(108, 100, 138, 0.12);
+}
+
+.stage3TapAck.ack {
+  color: #6B75BC;
+}
+
+.stage3TapAck.hit {
+  color: #5B936E;
+}
+
+.stage3TapAck.miss {
+  color: #B46A7B;
+}
+
+.stage3TapPulse {
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(143, 149, 216, 0.16);
+  border: 2px solid rgba(143, 149, 216, 0.28);
+  z-index: 2;
+}
+
+.stage3SideLabel {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.stage3SideHint {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6E7893;
+}
+
+.stage3CenterStop {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  min-width: 96px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: #D89AA1;
+  color: #FFF;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  box-shadow: 0 10px 22px rgba(216, 154, 161, 0.28);
+}
+
+
+.helpEntryRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.rulesHelpBtn {
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(248, 243, 249, 0.96);
+  border: 1px solid rgba(143, 149, 216, 0.24);
+  color: #6872B9;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(143, 149, 216, 0.12);
+}
+
+.rulesMask {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(68, 80, 106, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px;
+  box-sizing: border-box;
+}
+
+.rulesDialog {
+  width: 100%;
+  max-width: 680rpx;
+  max-height: 82vh;
+  background: rgba(255, 252, 253, 0.98);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 38px rgba(108, 100, 138, 0.18);
+}
+
+.rulesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(123, 128, 152, 0.12);
+}
+
+.rulesTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.rulesClose {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(239, 232, 244, 0.92);
+  color: #6F7892;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.rulesScroll {
+  max-height: 58vh;
+  padding: 14px 18px 8px;
+  box-sizing: border-box;
+}
+
+.rulesLead {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-foreground);
+  line-height: 22px;
+}
+
+.rulesSectionTitle {
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-foreground);
+  line-height: 22px;
+}
+
+.rulesSubTitle {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4A5872;
+  line-height: 20px;
+}
+
+.rulesText {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 22px;
+  color: #6E7893;
+}
+
+.rulesFooter {
+  padding: 12px 18px 18px;
+  border-top: 1px solid rgba(123, 128, 152, 0.12);
+}
+
+.rulesConfirmBtn {
+  width: 100%;
+}
+
+.win{
+  width: 750rpx;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.result{
+  width: 686rpx;
+  padding: 20rpx 32rpx;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border-radius: 10rpx;
+}
+
+/* 8拍进度条样式 */
+.stage3ProgressWrap {
+  margin: 20rpx 0;
+  padding: 20rpx;
+  background: rgba(143, 149, 216, 0.08);
+  border-radius: 16rpx;
+}
+
+.stage3ProgressLabel {
+  font-size: 28rpx;
+  color: #5B647B;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+.stage3ProgressBar {
+  height: 12rpx;
+  background: rgba(143, 149, 216, 0.2);
+  border-radius: 6rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+
+.stage3ProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #8F95D8 0%, #B89AE6 100%);
+  border-radius: 6rpx;
+  transition: width 0.3s ease;
+}
+
+.stage3ProgressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24rpx;
+}
+
+.stage3ProgressCount {
+  color: #8F95D8;
+  font-weight: 600;
+}
+
+.stage3ProgressNext {
+  color: #8B90A6;
+}
