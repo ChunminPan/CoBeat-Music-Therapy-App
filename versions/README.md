@@ -1,1 +1,1 @@
-Archived source-code snapshots of the CoBeat WeChat mini-program.
+Archived source-code snapshots of the CoBeat.
