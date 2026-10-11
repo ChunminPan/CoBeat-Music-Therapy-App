@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "节律训练与家长陪同",
+  "usingComponents": {
+    "drum-character": "/components/drum-character/index"
+  }
+}

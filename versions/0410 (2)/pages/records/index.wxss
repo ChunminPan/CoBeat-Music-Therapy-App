@@ -1,0 +1,58 @@
+.record-card {
+  margin-top: 32rpx;
+}
+
+.record-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.record-title {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.record-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12rpx 0;
+}
+
+.record-row.meta {
+  padding-top: 0;
+}
+
+.record-label {
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+}
+
+.record-value {
+  font-size: var(--text-base);
+  color: var(--color-foreground);
+  font-weight: 500;
+}
+
+.record-meta-text {
+  font-size: var(--text-xs);
+  color: var(--color-muted-foreground);
+}
+
+.record-empty {
+  padding: 20rpx 0;
+}
+
+.record-actions {
+  margin-top: 12rpx;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-secondary {
+  font-size: var(--text-xs);
+}
+

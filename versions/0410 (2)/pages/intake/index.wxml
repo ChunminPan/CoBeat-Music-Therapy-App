@@ -1,0 +1,118 @@
+<view class="container intake-page">
+  <view class="page-content intake-content">
+    <view class="card intro-card">
+      <text class="page-title">受试者信息收集表单</text>
+      <text class="page-desc">首次进入小程序时，请先填写以下信息。提交后将进入原有训练功能。</text>
+    </view>
+
+    <view class="card form-card mt-20">
+      <view class="section-header">
+        <text class="section-title">必填</text>
+        <text class="section-tag section-tag-required">请完整填写</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">昵称</text>
+        <input
+          class="text-input"
+          placeholder="请输入昵称"
+          value="{{form.nickname}}"
+          data-field="nickname"
+          bindinput="onTextInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">年龄</text>
+        <input
+          class="text-input"
+          type="number"
+          placeholder="请输入年龄"
+          value="{{form.age}}"
+          data-field="age"
+          bindinput="onTextInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">性别</text>
+        <radio-group data-field="gender" bindchange="onRadioChange">
+          <view class="radio-group">
+            <label class="radio-item" wx:for="{{genderOptions}}" wx:key="*this">
+              <radio value="{{item}}" checked="{{form.gender === item}}" color="#8B9FDB" />
+              <text>{{item}}</text>
+            </label>
+          </view>
+        </radio-group>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">是否有 ASD 正式诊断</text>
+        <radio-group data-field="hasAsdDiagnosis" bindchange="onRadioChange">
+          <view class="radio-group">
+            <label class="radio-item" wx:for="{{yesNoOptions}}" wx:key="*this">
+              <radio value="{{item}}" checked="{{form.hasAsdDiagnosis === item}}" color="#8B9FDB" />
+              <text>{{item}}</text>
+            </label>
+          </view>
+        </radio-group>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label long-label">同意匿名使用训练数据进行研究分析？数据将以匿名形式用于统计分析，不公开个人身份信息。</text>
+        <radio-group data-field="consentResearch" bindchange="onRadioChange">
+          <view class="radio-group">
+            <label class="radio-item" wx:for="{{yesNoOptions}}" wx:key="*this">
+              <radio value="{{item}}" checked="{{form.consentResearch === item}}" color="#8B9FDB" />
+              <text>{{item}}</text>
+            </label>
+          </view>
+        </radio-group>
+      </view>
+    </view>
+
+    <view class="card form-card mt-20">
+      <view class="section-header">
+        <text class="section-title">选填</text>
+        <text class="section-tag">仅在适用时填写</text>
+      </view>
+
+      <block wx:if="{{showDiagnosisExtras}}">
+        <view class="form-item">
+          <text class="form-label">DSM-5 支持等级（若报告写明）</text>
+          <radio-group data-field="dsmLevel" bindchange="onRadioChange">
+            <view class="radio-group vertical-group">
+              <label class="radio-item" wx:for="{{dsmOptions}}" wx:key="*this">
+                <radio value="{{item}}" checked="{{form.dsmLevel === item}}" color="#8B9FDB" />
+                <text>{{item}}</text>
+              </label>
+            </view>
+          </radio-group>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">CARS 总分（若报告有）</text>
+          <input
+            class="text-input"
+            type="digit"
+            placeholder="如 32.5"
+            value="{{form.carsScore}}"
+            data-field="carsScore"
+            bindinput="onTextInput"
+          />
+          <text class="form-hint">请输入分数</text>
+        </view>
+      </block>
+
+      <view wx:else class="collapsed-tip">
+        <text class="collapsed-text">当“是否有 ASD 正式诊断”选择为“是”时，这里会显示 DSM-5 支持等级与 CARS 总分。</text>
+      </view>
+    </view>
+
+    <view class="submit-wrap mt-20">
+      <button class="btn btn-primary submit-btn" loading="{{submitting}}" bindtap="onSubmit">
+        {{isEditMode ? '保存并返回' : '提交并进入小程序'}}
+      </button>
+    </view>
+  </view>
+</view>
